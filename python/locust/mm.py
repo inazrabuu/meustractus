@@ -18,6 +18,7 @@ class MMTaskSet(TaskSet):
 	@task(1)
 	def index(self):
 		self.client.get("/")
+		
 	@task(2)
 	def browsing(self):
 		# Go to a category
