@@ -2,8 +2,8 @@ from locust import HttpLocust, TaskSet
 from bs4 import BeautifulSoup
 
 def index(l):
-	with open("htmlget.txt", "r") as f:
-		fread = f.read().decode('utf-16').encode('ascii', 'ignore')
+    with open("htmlget.txt", "r") as f:
+        fread = f.read().decode('utf-16').encode('ascii', 'ignore')
 
 	myList = fread.splitlines(True)
 

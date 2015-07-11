@@ -2,8 +2,9 @@ from bs4 import BeautifulSoup
 import urllib2
 
 
-#response = urllib2.urlopen("https://www.mataharimall.com?c=uycrVZ")
-response = urllib2.urlopen("https://aws.mataharimall.com")
+host = "https://www.mataharimall.com"
+#host = "https://aws.mataharimall.com"
+response = urllib2.urlopen(host)
 page_source = response.read()
 
 soup = BeautifulSoup(page_source, 'html.parser')
