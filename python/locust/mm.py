@@ -56,7 +56,6 @@ class MMTaskSet(TaskSet):
 				cartResponse = self.client.get(self.endpoints['cart'])
 				print cartResponse.content
 
-
 #	def login(self):
 
 	
