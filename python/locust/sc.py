@@ -18,6 +18,8 @@ class SCTaskSet(TaskSet):
 		'orders' : '/orders',
 		'product' : '/products'
 	}
+
+	storeId = 499
 		
 	def on_start(self):
 		loginRespone = self.client.get(self.endpoints['home'])
@@ -38,7 +40,7 @@ class SCTaskSet(TaskSet):
 	def scenario1(self):
 		self.client.post(self.endpoints['login'], self.param)
 		
-		self.client.get(self.endpoints['dashboard'].format('499'))
+		self.client.get(self.endpoints['dashboard'].format(self.storeId))
 		
 		self.client.get(self.endpoints['logout'])
 
@@ -47,10 +49,10 @@ class SCTaskSet(TaskSet):
 	def scenario2(self):
 		self.client.post(self.endpoints['login'], self.param)
 		
-		self.client.get(self.endpoints['dashboard'].format('499'))
+		self.client.get(self.endpoints['dashboard'].format(self.storeId))
 
 		statuses = ['pending', 'shipped', 'rejected', 'delivered']
-		orderURL = self.endpoints['dashboard'].format('499') + self.endpoints['orders']
+		orderURL = self.endpoints['dashboard'].format(self.storeId) + self.endpoints['orders']
 
 		self.client.get(orderURL)
 		for status in statuses:
@@ -63,9 +65,9 @@ class SCTaskSet(TaskSet):
 	def scenario3(self):
 		self.client.post(self.endpoints['login'], self.param)
 
-		self.client.get(self.endpoints['dashboard'].format('499'))
+		self.client.get(self.endpoints['dashboard'].format(self.storeId))
 
-		productURL = self.endpoints['dashboard'].format('499') + self.endpoints['product']
+		productURL = self.endpoints['dashboard'].format(self.storeId) + self.endpoints['product']
 
 		self.client.get(productURL)
 
