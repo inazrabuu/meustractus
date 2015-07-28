@@ -13,10 +13,13 @@ class MMTaskSet(TaskSet):
 		'add_to_cart' : '/system/ajax'
 	}
 
+	#categoryFile = "mataharimall.com.txt"
+	categoryFile = "v3.mataharimall.net.txt"
+
 	def on_start(self):
 		if not len(self.categories) > 0 :
 			#Get the categories from file
-			with open("mataharimall.com.txt", "r") as f:
+			with open(self.categoryFile, "r") as f:
 				fread = f.read().decode('utf-16').encode('ascii', 'ignore')
 
 			catlist = fread.splitlines(True)
@@ -37,24 +40,24 @@ class MMTaskSet(TaskSet):
 		if urlPdp is not None:
 			# Go to a product detail page
 			pdpPage = self.client.get(urlPdp.get('href'))
-			if pdpPage is not None:
-				pdp =  BeautifulSoup(pdpPage.content, "html.parser")
-				form = pdp("form", "commerce-add-to-cart")
-				inputs = form[0].find_all('input')
-				param = {
-					"_triggering_element_value" : "Beli Aja",
-					"quantity" : 1
-				}
-				for inp in inputs:
-					if inp.get('name') == 'product_id' or inp.get('name') == 'form_id' or inp.get('name') == 'form_build_id':
-						param[inp.get('name')] = inp.get('value')
+			#if pdpPage is not None:
+#				pdp =  BeautifulSoup(pdpPage.content, "html.parser")
+#				form = pdp("form", "commerce-add-to-cart")
+#				inputs = form[0].find_all('input')
+#				param = {
+#					"_triggering_element_value" : "Beli Aja",
+#					"quantity" : 1
+#				}
+#				for inp in inputs:
+#					if inp.get('name') == 'product_id' or inp.get('name') == 'form_id' or inp.get('name') == 'form_build_id':
+#						param[inp.get('name')] = inp.get('value')#
 
-				# Put an item into shopping cart
-				atcResponse = self.client.post(self.endpoints['add_to_cart'], param)
-				
-				# View the cart
-				cartResponse = self.client.get(self.endpoints['cart'])
-				print cartResponse.content
+#				# Put an item into shopping cart
+#				atcResponse = self.client.post(self.endpoints['add_to_cart'], param)
+#				
+#				# View the cart
+#				cartResponse = self.client.get(self.endpoints['cart'])
+#				print cartResponse.content
 
 #	def login(self):
 

@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 import urllib2
 
-host = raw_input("Please enter the MM host name (complete with the protocol): ")
+host = "http://v3.mataharimall.net"
+#host = raw_input("Please enter the MM host name (complete with the protocol): ")
 response = urllib2.urlopen(host)
 page_source = response.read()
 
