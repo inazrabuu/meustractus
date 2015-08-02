@@ -114,7 +114,7 @@ def main():
   # Demo
   # Content from: "http://thenextweb.com/apps/2013/03/21/swayy-discover-curate-content/"
   
-	pageURL = 'http://megapolitan.kompas.com/read/2015/08/01/20532641/Setelah.Jalan.Kaki.4.KM.Saat.MOS.Kaki.Evan.Membiru.Hingga.Meninggal.'
+	pageURL = 'http://bisniskeuangan.kompas.com/read/2015/07/31/084850226/Makin.Terpuruk.Rupiah.Sentuh.Posisi.Terendah.sejak.Krisis.1998'
 	response = urllib2.urlopen(pageURL)
 
 	page = BeautifulSoup(response.read(), "html.parser")
@@ -131,20 +131,23 @@ def main():
 		if (classes is not None):
 			className = ' '.join(classes)
 			if (className.strip() == 'span6 nml' or className.strip() == 'kcm-span6'):
-				for p in elem.find_all('p'):
-					content += p.text.encode('ascii', 'ignore') + "\n\n"
+				if (len(elem.find_all('p'))):
+					for p in elem.find_all('p'):
+						content += p.text.encode('ascii', 'ignore') + "\n\n"
+				else:
+					content = re.compile(r'<.*?>').sub('', str(elem.find('span')).decode('utf-8').encode('ascii', 'ignore').replace('<br/>', '\n'))
 				break
 
 	# Create a SummaryTool object
 	st = SummaryTool()
 
-  # Build the sentences dictionary
+	# Build the sentences dictionary
 	sentences_dic = st.get_senteces_ranks(content)
 
-  # Build the summary with the sentences dictionary
+	# Build the summary with the sentences dictionary
 	summary = st.get_summary(title, content, sentences_dic)
 
-  # Print the summary
+	# Print the summary
 	print summary
 
   # Print the ratio between the summary length and the original length
