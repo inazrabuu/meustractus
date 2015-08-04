@@ -1,23 +1,38 @@
 from bs4 import BeautifulSoup
 import urllib2
 
-host = "http://v3.mataharimall.net"
-#host = raw_input("Please enter the MM host name (complete with the protocol): ")
-response = urllib2.urlopen(host)
-page_source = response.read()
+def iterate(categories, level):
+	for category in categories:
+		tab = "\t" * level
+		print "%s %s" % (tab, category.find("a").get("href"))
+		subcats = category("li")
+		if (len(subcats) > 0):
+			iterate(subcats, level + 1)
+			
 
-soup = BeautifulSoup(page_source, 'html.parser')
+def main():
+	host = "http://v3.mataharimall.net"
+	#host = raw_input("Please enter the MM host name (complete with the protocol): ")
+	response = urllib2.urlopen(host)
+	page_source = response.read()
 
-categories = soup("li","category-item")
+	soup = BeautifulSoup(page_source, 'html.parser')
 
-for category in categories:
-	print (category.find("a").get('href'))
-	subcats = category("li", "subcategory-item")
+	categories = soup("li","category-item")
 
-	if (len(subcats) > 0):
-		for subcat in subcats:
-			print ("\t" + subcat.find("a").get('href'))
-			ssubcats = subcat("li")
-			if (len(ssubcats) > 0):
-				for ssubcat in ssubcats:
-					print ("\t\t" + subcat.find("a").get('href'))
+#	iterate(categories, 0)
+
+	for category in categories:
+		print (category.find("a").get('href'))
+		subcats = category("li", "subcategory-item")
+		
+		if (len(subcats) > 0):
+			for subcat in subcats:
+				print ("\t" + subcat.find("a").get('href'))
+				ssubcats = subcat("li")
+				if (len(ssubcats) > 0):
+					for ssubcat in ssubcats:
+						print ("\t\t" + subcat.find("a").get('href'))
+
+if __name__ == '__main__':
+	main()
