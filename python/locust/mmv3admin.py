@@ -1,5 +1,6 @@
 from locust import HttpLocust, TaskSet, task
 from bs4 import BeautifulSoup
+import re
 
 class MMAdminTask(TaskSet):
 	endpoints = {
@@ -26,6 +27,11 @@ class MMAdminTask(TaskSet):
 
 		#login
 		loginResponse = self.client.post(self.endpoints['home'], param)
+
+		loginPage = BeautifulSoup(loginResponse.content, 'html.parser')
+		for link in loginPage.find_all('a'):
+			#if ("http:" in link.get('href')):
+				print link.get('href')
 
 		#logout
 		logoutResponse = self.client.get(self.endpoints['logout'])		
