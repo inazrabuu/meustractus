@@ -30,8 +30,8 @@ class MMAdminTask(TaskSet):
 
 		loginPage = BeautifulSoup(loginResponse.content, 'html.parser')
 		for link in loginPage.find_all('a'):
-			#if ("http:" in link.get('href')):
-				print link.get('href')
+			if ("/" in link.get('href') and not 'http:' in link.get('href')):
+				self.client.get(link.get('href'))
 
 		#logout
 		logoutResponse = self.client.get(self.endpoints['logout'])		

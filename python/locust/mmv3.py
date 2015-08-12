@@ -36,7 +36,7 @@ class MMV3TaskSet(TaskSet):
 			'rememberme': ''
 		}
 		#loginResponse = self.client.post(self.endpoints['login_page'], param)
-	
+
 	@task(2)
 	def browsing(self):
 		#Go to a category page
