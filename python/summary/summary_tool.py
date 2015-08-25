@@ -1,7 +1,5 @@
 # coding=UTF-8
 from __future__ import division
-from bs4 import BeautifulSoup
-import urllib2
 import re
 
 # This is a naive text summarization algorithm
@@ -42,7 +40,7 @@ class SummaryTool(object):
   # Convert the content into a dictionary <K, V>
   # k = The formatted sentence
   # V = The rank of the sentence
-  def get_senteces_ranks(self, content):
+  def get_sentences_ranks(self, content):
 
     # Split the content into sentences
     sentences = self.split_content_to_sentences(content)
@@ -106,55 +104,3 @@ class SummaryTool(object):
         summary.append(sentence)
 
     return ("\n").join(summary)
-
-
-# Main method, just run "python summary_tool.py"
-def main():
-
-  # Demo
-  # Content from: "http://thenextweb.com/apps/2013/03/21/swayy-discover-curate-content/"
-  
-	pageURL = 'http://bisniskeuangan.kompas.com/read/2015/07/31/084850226/Makin.Terpuruk.Rupiah.Sentuh.Posisi.Terendah.sejak.Krisis.1998'
-	response = urllib2.urlopen(pageURL)
-
-	page = BeautifulSoup(response.read(), "html.parser")
-
-	h2s = page.find_all('h2')
-	title = h2s[0].text
-	
-	content = ''
-	
-	#This is bullshit, try to get the text directly without having to loop in the elements
-	for elem in page.find_all('div'):
-		classes = elem.get('class')
-		
-		if (classes is not None):
-			className = ' '.join(classes)
-			if (className.strip() == 'span6 nml' or className.strip() == 'kcm-span6'):
-				if (len(elem.find_all('p'))):
-					for p in elem.find_all('p'):
-						content += p.text.encode('ascii', 'ignore') + "\n\n"
-				else:
-					content = re.compile(r'<.*?>').sub('', str(elem.find('span')).decode('utf-8').encode('ascii', 'ignore').replace('<br/>', '\n'))
-				break
-
-	# Create a SummaryTool object
-	st = SummaryTool()
-
-	# Build the sentences dictionary
-	sentences_dic = st.get_senteces_ranks(content)
-
-	# Build the summary with the sentences dictionary
-	summary = st.get_summary(title, content, sentences_dic)
-
-	# Print the summary
-	print summary
-
-  # Print the ratio between the summary length and the original length
-	print ""
-	print "Original Length %s" % (len(title) + len(content))
-	print "Summary Length %s" % len(summary)
-	print "Summary Ratio: %s" % (100 - (100 * (len(summary) / (len(title) + len(content)))))
-
-if __name__ == '__main__':
-	main()
